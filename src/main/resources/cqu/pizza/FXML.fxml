@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="722.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cqu.pizza.Controller">
+   <children>
+      <Label layoutX="305.0" layoutY="40.0" text="Simulation">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="55.0" layoutY="124.0" text="Duration">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="durationField" layoutX="132.0" layoutY="123.0" />
+      <Button layoutX="74.0" layoutY="229.0" mnemonicParsing="false" onAction="#onRun" text="Run">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button layoutX="237.0" layoutY="228.0" mnemonicParsing="false" onAction="#onReset" text="Reset">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Label layoutX="55.0" layoutY="318.0" text="File Name">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="fileNameField" layoutX="128.0" layoutY="316.0" />
+      <Button layoutX="335.0" layoutY="392.0" mnemonicParsing="false" onAction="#onSave" text="Save">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <TextArea fx:id="reportArea" layoutX="464.0" layoutY="129.0" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
+      <Label layoutX="541.0" layoutY="339.0" text="Report">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Button layoutX="539.0" layoutY="392.0" mnemonicParsing="false" onAction="#onExit" text="Exit">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
