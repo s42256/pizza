@@ -1,0 +1,18 @@
+# NetBeans / Ant build artifacts
+nbproject/private/
+build/
+dist/
+
+# Maven build artifacts
+target/
+
+# IDE project settings
+.idea/
+.vscode/
+
+# OS generated files
+Thumbs.db
+.DS_Store
+
+# Log files
+*.log
