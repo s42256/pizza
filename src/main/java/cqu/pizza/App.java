@@ -26,7 +26,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // Load GUI From FXML and set size of the Scene
-        scene = new Scene(loadFXML("FXML"), 640, 480);
+        scene = new Scene(loadFXML("FXML"));
         stage.setTitle("Simulation");   // title for the window
         stage.setScene(scene); // attach the scene to the stage
         stage.show(); // make the stage visible

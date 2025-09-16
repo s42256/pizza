@@ -9,41 +9,48 @@ import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 /**
- * Controller for the Pizza Simulation GUI of Phase 1
- * Responsible for handling user interactions with the buttons
+ * Controller for the Pizza Simulation GUI (Phase 1).
+ * Handles button clicks and updates the text fields and report area.
+ *
  * @author 12296309
  * @author MD SAKIB UL ISLAM
  */
 public class Controller implements Initializable {
-    /* Input field for the length of the simulation */
+
+    // Input for the length of the simulation
     @FXML private TextField durationField;
-    /* Input field for the filename wherer results should be saved */
+
+    // Input for the filename where results should be saved
     @FXML private TextField fileNameField;
-    /* Area where messages and reports are displayed*/
+
+    // Area where messages and the summary report are shown
     @FXML private TextArea reportArea;
-/**
- * Called automatically when the controller is created
- * @param url not used here
- * @param rb  not used here
- */
+
+    /**
+     * Runs after the FXML is loaded.
+     *
+     * @param url not used
+     * @param rb  not used
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // nothing needed for Phase 1
+        // No setup needed for Phase 1
     }
+
     /**
-     * Handles the Run button.
-     * Right now it just shows a placeholder message.
+     * Run button handler (Phase 1 stub).
      *
      * @param event the button event
      */
     @FXML
     private void onRun(ActionEvent event) {
-        append("Run clicked (Phase 1) – simulation not implemented yet.");
+        showMessage("Run clicked (Phase 1) – simulation not implemented yet.");
     }
+
     /**
-     * Handles the Reset button.
-     * Clears the input fields and the report area.
+     * Reset button handler. Clears inputs and the report area.
      *
      * @param event the button event
      */
@@ -52,21 +59,21 @@ public class Controller implements Initializable {
         durationField.clear();
         fileNameField.clear();
         reportArea.clear();
-        append("Reset complete.");
+        showMessage("Reset complete.");
     }
+
     /**
-     * Handles the Save button.
-     * Shows a placeholder message (saving not added yet).
+     * Save button handler (Phase 1 stub).
      *
      * @param event the button event
      */
     @FXML
     private void onSave(ActionEvent event) {
-        append("Save clicked (Phase 1) – saving not implemented yet.");
+        showMessage("Save clicked (Phase 1) – saving not implemented yet.");
     }
+
     /**
-     * Handles the Exit button.
-     * Closes the application window.
+     * Exit button handler. Closes the window.
      *
      * @param event the button event
      */
@@ -75,14 +82,13 @@ public class Controller implements Initializable {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }
+
     /**
-     * Helper method to add text to the report area.
-     * Starts a new line if there is already text there.
+     * Replaces the contents of the report area with a new message.
      *
-     * @param line the message to add
+     * @param message the text to display
      */
-    private void append(String line) {
-        if (reportArea.getText().isEmpty()) reportArea.appendText(line);
-        else reportArea.appendText(System.lineSeparator() + line);
+    private void showMessage(String message) {
+        reportArea.setText(message);
     }
 }
