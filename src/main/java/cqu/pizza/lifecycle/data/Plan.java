@@ -12,7 +12,7 @@ import java.util.Map;
  * @author sisak
  */
 public class Plan {
-
+    // package-private (no modifier) + static
     static Pizza[] pizzas = {
         new Pizza("P&P", 5),
         new Pizza("P&O", 4)
@@ -25,7 +25,7 @@ public class Plan {
         }
     }
 
-    // package-private static getter per spec
+    // package-private static getter
     static Pizza[] getPizzas() {
         return pizzas;
     }
@@ -39,4 +39,4 @@ public class Plan {
         return (p == null) ? -1 : p.preparationTime();
     }
 }
-}
+
