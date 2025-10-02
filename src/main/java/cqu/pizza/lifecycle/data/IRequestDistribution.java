@@ -8,6 +8,6 @@ package cqu.pizza.lifecycle.data;
  *
  * @author sisak
  */
-public class IRequestDistribution {
-    
+public interface IRequestDistribution {
+    Request next();
 }

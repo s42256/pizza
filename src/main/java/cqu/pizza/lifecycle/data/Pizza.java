@@ -8,6 +8,6 @@ package cqu.pizza.lifecycle.data;
  *
  * @author sisak
  */
-public class Pizza {
-    
+public record Pizza(String name, int preparationTime) {
+    // name + preparation time (mins)
 }

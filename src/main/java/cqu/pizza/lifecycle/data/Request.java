@@ -8,6 +8,6 @@ package cqu.pizza.lifecycle.data;
  *
  * @author sisak
  */
-public class Request {
-    
+public record Request(String pizza, int orderTime) {
+    // pizza requested + the request time (clock units)
 }
