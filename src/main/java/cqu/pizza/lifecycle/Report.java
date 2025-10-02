@@ -9,5 +9,5 @@ package cqu.pizza.lifecycle;
  * @author sisak
  */
 public class Report {
-    
+    // Phase 2 doesn't use this yet.
 }
