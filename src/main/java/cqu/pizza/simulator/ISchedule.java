@@ -8,6 +8,15 @@ package cqu.pizza.simulator;
  *
  * @author sisak
  */
+/**
+ * Scheduling capability provided to events.
+ */
 public interface ISchedule {
+
+    /**
+     * Adds an event to the simulator's event queue.
+     *
+     * @param e event to schedule
+     */
     void schedule(Event e);
 }

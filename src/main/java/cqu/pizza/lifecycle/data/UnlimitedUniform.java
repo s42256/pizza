@@ -8,14 +8,21 @@ package cqu.pizza.lifecycle.data;
  *
  * @author sisak
  */
+/**
+ * Generates requests at a fixed interval, cycling over menu items.
+ */
 public class UnlimitedUniform implements IRequestDistribution {
 
-    private final int interval; // time between requests
-    private int t;              // next request time
+    private final int interval;
+    private int t;
     private final Pizza[] pizzas;
-    private int n;              // number of requests so far
+    private int n;
 
-    // requests at fixed intervals, cycling through pizzas
+    /**
+     * Creates a generator with the given interval.
+     *
+     * @param interval time between consecutive requests
+     */
     public UnlimitedUniform(int interval) {
         this.interval = interval;
         this.pizzas = Plan.getPizzas();
@@ -23,11 +30,16 @@ public class UnlimitedUniform implements IRequestDistribution {
         this.n = 0;
     }
 
+    /**
+     * Returns the next request. Every fourth request is for "LOT"
+     * to exercise the refusal path in Phase 2.
+     *
+     * @return next request
+     */
     @Override
     public Request next() {
         Request r = new Request(pizzas[n % pizzas.length].name(), t);
-        // inject a request for a non-menu pizza to exercise refusal path
-        if (n == 3) {
+        if (n == 3) { // one unavailable pizza request
             r = new Request("LOT", t);
         }
         t += interval;

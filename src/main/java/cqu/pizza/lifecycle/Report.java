@@ -8,6 +8,9 @@ package cqu.pizza.lifecycle;
  *
  * @author sisak
  */
+/**
+ * Placeholder for report data and formatting (added in later phases).
+ */
 public class Report {
-    // Phase 2 doesn't use this yet.
+    // intentionally empty for Phase 2
 }
