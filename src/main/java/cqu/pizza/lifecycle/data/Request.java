@@ -8,6 +8,10 @@ package cqu.pizza.lifecycle.data;
  *
  * @author sisak
  */
-public record Request(String pizza, int orderTime) {
-    // pizza requested + the request time (clock units)
-}
+/**
+ * Customer request for a pizza at a specific time.
+ *
+ * @param pizza requested pizza name
+ * @param orderTime request time
+ */
+public record Request(String pizza, int orderTime) { }

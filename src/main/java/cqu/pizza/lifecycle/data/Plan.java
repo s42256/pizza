@@ -12,6 +12,7 @@ import java.util.Map;
  * @author sisak
  */
 public class Plan {
+
     // package-private (no modifier) + static
     static Pizza[] pizzas = {
         new Pizza("P&P", 5),
@@ -25,18 +26,31 @@ public class Plan {
         }
     }
 
-    // package-private static getter
+    /**
+     * @return the static array of pizzas (package-private)
+     */
     static Pizza[] getPizzas() {
         return pizzas;
     }
 
+    /**
+     * Checks if a pizza is on the menu.
+     *
+     * @param pizzaName pizza name
+     * @return true if available; false otherwise
+     */
     public boolean onMenu(String pizzaName) {
         return menu.containsKey(pizzaName);
     }
 
+    /**
+     * Looks up the preparation time.
+     *
+     * @param pizzaName pizza name
+     * @return time in units, or -1 if not found
+     */
     public int getPreparationTime(String pizzaName) {
         Pizza p = menu.get(pizzaName);
         return (p == null) ? -1 : p.preparationTime();
     }
 }
-

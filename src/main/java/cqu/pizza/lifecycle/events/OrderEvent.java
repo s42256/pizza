@@ -13,21 +13,32 @@ import cqu.pizza.simulator.ISchedule;
  *
  * @author sisak
  */
+/**
+ * Event representing the arrival of a customer request.
+ */
 public class OrderEvent extends Event {
 
     private final Request request;
 
+    /**
+     * Creates an order-arrival event.
+     *
+     * @param request incoming request
+     */
     public OrderEvent(Request request) {
         super(request.orderTime());
         this.request = request;
     }
 
+    /**
+     * Converts the request to an order and schedules the next arrival.
+     *
+     * @param m model reference
+     * @param s scheduler reference
+     */
     @Override
     public void process(Model m, ISchedule s) {
-        // create/action the current order (may be refused)
         m.order(request);
-
-        // schedule the next request arrival
         Request next = m.nextRequest();
         s.schedule(new OrderEvent(next));
     }
