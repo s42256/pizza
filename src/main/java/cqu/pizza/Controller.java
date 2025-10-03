@@ -11,8 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
- * Controller for the Pizza Simulation GUI (Phase 1).
- * Handles button clicks and updates the text fields and report area.
+ * Controller for the Pizza Simulation GUI (Phase 1). Handles button clicks and
+ * updates the text fields and report area.
  *
  * @author 12296309
  * @author MD SAKIB UL ISLAM
@@ -20,19 +20,22 @@ import javafx.stage.Stage;
 public class Controller implements Initializable {
 
     // Input for the length of the simulation
-    @FXML private TextField durationField;
+    @FXML
+    private TextField durationField;
 
     // Input for the filename where results should be saved
-    @FXML private TextField fileNameField;
+    @FXML
+    private TextField fileNameField;
 
     // Area where messages and the summary report are shown
-    @FXML private TextArea reportArea;
+    @FXML
+    private TextArea reportArea;
 
     /**
      * Runs after the FXML is loaded.
      *
      * @param url not used
-     * @param rb  not used
+     * @param rb not used
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -46,7 +49,33 @@ public class Controller implements Initializable {
      */
     @FXML
     private void onRun(ActionEvent event) {
-        showMessage("Run clicked (Phase 1) – simulation not implemented yet.");
+        try {
+            int duration = Integer.parseInt(durationField.getText().trim());
+            if (duration <= 0) {
+                showMessage("Please enter a positive integer for duration.");
+                return;
+            }
+
+            // build model + simulator
+            cqu.pizza.lifecycle.Model model = new cqu.pizza.lifecycle.Model();
+            cqu.pizza.simulator.Simulator sim = new cqu.pizza.simulator.Simulator(model);
+
+            // initialize with first order event and report event
+            cqu.pizza.lifecycle.events.OrderEvent first
+                    = new cqu.pizza.lifecycle.events.OrderEvent(model.nextRequest());
+            cqu.pizza.lifecycle.events.ReportEvent report
+                    = new cqu.pizza.lifecycle.events.ReportEvent(duration);
+
+            sim.initialize(first, report);
+            sim.run(duration);
+
+            showMessage("Simulation complete. See console for the trace.");
+        } catch (NumberFormatException ex) {
+            showMessage("Duration must be a valid integer.");
+        } catch (Exception ex) {
+            showMessage("Unexpected error: " + ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 
     /**
