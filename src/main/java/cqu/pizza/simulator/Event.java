@@ -8,6 +8,19 @@ package cqu.pizza.simulator;
  *
  * @author sisak
  */
-public class Event {
-    
+import cqu.pizza.lifecycle.Model;
+
+public abstract class Event {
+
+    private final int time;
+
+    public Event(int time) {
+        this.time = time;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public abstract void process(Model m, ISchedule s);
 }

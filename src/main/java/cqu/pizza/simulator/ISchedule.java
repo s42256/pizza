@@ -8,6 +8,6 @@ package cqu.pizza.simulator;
  *
  * @author sisak
  */
-public class ISchedule {
-    
+public interface ISchedule {
+    void schedule(Event e);
 }
