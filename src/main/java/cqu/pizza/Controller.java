@@ -1,6 +1,7 @@
 package cqu.pizza;
 
 import cqu.pizza.lifecycle.Model;
+import cqu.pizza.lifecycle.Report;
 import cqu.pizza.lifecycle.events.OrderEvent;
 import cqu.pizza.lifecycle.events.ReportEvent;
 import cqu.pizza.simulator.Simulator;
@@ -15,11 +16,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Controller for the Pizza Simulation GUI (Phase 1). Handles button clicks and
+ * Controller for the Pizza Simulation GUI. Handles button clicks and
  * updates the text fields and report area.
  *
- * @author 12296309
- * @author MD SAKIB UL ISLAM
+ * @author sisak
  */
 public class Controller implements Initializable {
 
@@ -30,16 +30,19 @@ public class Controller implements Initializable {
     /** Called after the FXML is loaded. */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // no extra setup required for Phase 1–2
+        // no extra setup required
     }
 
     /**
      * Starts the simulation when the Run button is clicked.
+     * For Phase 4: after the simulator finishes, the report is retrieved
+     * from the model and shown in the report area.
      *
      * @param event action event from the Run button
      */
     @FXML
     private void onRun(ActionEvent event) {
+        reportArea.clear();
         try {
             int duration = Integer.parseInt(durationField.getText().trim());
             if (duration <= 0) {
@@ -51,12 +54,19 @@ public class Controller implements Initializable {
             Simulator sim = new Simulator(model);
 
             OrderEvent first = new OrderEvent(model.nextRequest());
-            ReportEvent report = new ReportEvent(duration);
+            ReportEvent reportEvent = new ReportEvent(duration);
 
-            sim.initialize(first, report);
+            sim.initialize(first, reportEvent);
             sim.run(duration);
 
-            showMessage("Simulation complete. See console for the trace.");
+            // Phase 4: get the generated report and display it in the GUI
+            Report report = model.getReport();
+            if (report != null) {
+                reportArea.setText(report.getText());
+            } else {
+                showMessage("No report generated.");
+            }
+
         } catch (NumberFormatException ex) {
             showMessage("Duration entered must be a positive integer.");
         } catch (Exception ex) {
@@ -85,7 +95,7 @@ public class Controller implements Initializable {
      */
     @FXML
     private void onSave(ActionEvent event) {
-        showMessage("Save clicked (Phase 1–2) – not implemented yet.");
+        showMessage("Save clicked – not implemented yet.");
     }
 
     /**

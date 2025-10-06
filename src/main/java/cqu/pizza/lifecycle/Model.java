@@ -23,9 +23,6 @@ import static cqu.pizza.lifecycle.data.Plan.COOKING_TIME;
 /**
  * The application model. Tracks all orders and provides the
  * processing methods used by events (prepare, cook, box, finalise).
- *
- * In this phase there is no oven queue; each step starts
- * as soon as the previous one finishes.</p>
  */
 public class Model {
 
@@ -35,8 +32,8 @@ public class Model {
     /** Menu information and fixed step times. */
     private final Plan plan;
 
-    /** Report placeholder (used in later phases). */
-    private final Report report = new Report();
+    /** The report generated at the end of a run (Phase 4). */
+    private Report report;
 
     /** All orders seen during the run. */
     private final List<Order> allOrders       = new ArrayList<>();
@@ -93,6 +90,7 @@ public class Model {
         System.out.printf("t = %4d: Order %d for %s actioned%n",
                 r.orderTime(), o.getId(), r.pizza());
         activeOrders.add(o);
+        o.stepCompleted();
         return o;
     }
 
@@ -162,6 +160,28 @@ public class Model {
         activeOrders.remove(o);
         completedOrders.add(o);
         System.out.printf("t = %4d: Order %d completed%n", time, o.getId());
+    }
+
+    // ---------------- Phase 4 report methods ----------------
+
+    /**
+     * Builds and stores the statistics/status report for the current model state.
+     * Called from {@code ReportEvent} at the simulation stop time.
+     *
+     * @param duration the total run duration (stop time)
+     */
+    public void report(int duration) {
+        this.report = new Report(duration, completedOrders, refusedOrders, activeOrders);
+    }
+
+    /**
+     * Returns the most recently generated report (may be {@code null}
+     * if the simulation has not yet produced one).
+     *
+     * @return the report for the last run, or {@code null}
+     */
+    public Report getReport() {
+        return report;
     }
 
     // Accessors used in later phases / report

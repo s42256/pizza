@@ -13,28 +13,30 @@ import cqu.pizza.simulator.ISchedule;
  * @author sisak
  */
 /**
- * Final event that will later generate the summary report.
- * In Phase 2 it prints a placeholder message.
+ * Final event that triggers building the summary report.
+ * In Phase 4 this calls the model to construct the report for the GUI.
  */
 public class ReportEvent extends Event {
 
     /**
      * Creates a report event for the given time.
      *
-     * @param time scheduled report time
+     * @param time scheduled report time (simulation stop time)
      */
     public ReportEvent(int time) {
         super(time);
     }
 
     /**
-     * Prints the placeholder message for Phase 2.
+     * Generates the final report via the model.
      *
      * @param m model reference
-     * @param s scheduler reference
+     * @param s scheduler reference (unused here)
      */
     @Override
     public void process(Model m, ISchedule s) {
-        System.out.printf("Report to be generated at time %d - under development%n", getTime());
+        // Build the report for display in the GUI
+        m.report(getTime());
+        // No follow-up events are scheduled from here.
     }
 }
