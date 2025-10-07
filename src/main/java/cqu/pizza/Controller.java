@@ -14,6 +14,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
+import cqu.pizza.lifecycle.ReportException;
+
 
 /**
  * Controller for the Pizza Simulation GUI. Handles button clicks and
@@ -27,16 +29,17 @@ public class Controller implements Initializable {
     @FXML private TextField fileNameField;
     @FXML private TextArea reportArea;
 
+    private Model model;
+    private Report report;
+
     /** Called after the FXML is loaded. */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // no extra setup required
+        // no extra setup required for Phase 1–2
     }
 
     /**
      * Starts the simulation when the Run button is clicked.
-     * For Phase 4: after the simulator finishes, the report is retrieved
-     * from the model and shown in the report area.
      *
      * @param event action event from the Run button
      */
@@ -50,7 +53,7 @@ public class Controller implements Initializable {
                 return;
             }
 
-            Model model = new Model();
+            model = new Model();
             Simulator sim = new Simulator(model);
 
             OrderEvent first = new OrderEvent(model.nextRequest());
@@ -59,19 +62,47 @@ public class Controller implements Initializable {
             sim.initialize(first, reportEvent);
             sim.run(duration);
 
-            // Phase 4: get the generated report and display it in the GUI
-            Report report = model.getReport();
+            // Phase 4+: get the generated report and display it
+            report = model.getReport();
             if (report != null) {
                 reportArea.setText(report.getText());
             } else {
                 showMessage("No report generated.");
             }
-
         } catch (NumberFormatException ex) {
             showMessage("Duration entered must be a positive integer.");
         } catch (Exception ex) {
             showMessage("Unexpected error: " + ex.getMessage());
             ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Saves the report to the file specified in the filename field.
+     * Validates that a report exists and that a filename has been entered.
+     *
+     * @param event action event from the Save button
+     */
+    @FXML
+    private void onSave(ActionEvent event) {
+        String filename = (fileNameField.getText() == null) ? "" : fileNameField.getText().trim();
+
+        if (filename.isEmpty()) {
+            showMessage("Please enter a filename before saving.");
+            return;
+        }
+        if (report == null) {
+            showMessage("There is no report to save. Run the simulation first.");
+            return;
+        }
+
+        try {
+            report.save(filename);
+            showMessage("Report saved to " + filename);
+        } catch (ReportException re) {
+            showMessage(re.getMessage());
+        } catch (Exception ex) {
+            showMessage("Unexpected error while saving: " + ex.getMessage());
         }
     }
 
@@ -86,16 +117,6 @@ public class Controller implements Initializable {
         fileNameField.clear();
         reportArea.clear();
         showMessage("Reset complete.");
-    }
-
-    /**
-     * Placeholder for Phase 5 file save.
-     *
-     * @param event action event from the Save button
-     */
-    @FXML
-    private void onSave(ActionEvent event) {
-        showMessage("Save clicked – not implemented yet.");
     }
 
     /**
