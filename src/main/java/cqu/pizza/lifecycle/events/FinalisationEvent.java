@@ -12,7 +12,9 @@ import cqu.pizza.simulator.ISchedule;
  *
  * @author sisak
  */
-/** Finalise: set finish time, move to completed. */
+
+
+/** Final housekeeping: mark finished and move to completed list. */
 public class FinalisationEvent extends Event {
 
     private final Order order;
@@ -25,7 +27,6 @@ public class FinalisationEvent extends Event {
     @Override
     public void process(Model m, ISchedule s) {
         m.finalise(getTime(), order);
-        order.stepCompleted();
-        // no successor
+        order.stepCompleted(); 
     }
 }

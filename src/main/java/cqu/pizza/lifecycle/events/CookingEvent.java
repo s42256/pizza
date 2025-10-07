@@ -12,7 +12,7 @@ import cqu.pizza.simulator.ISchedule;
  *
  * @author sisak
  */
-/** Cook immediately when preparation is done (infinite ovens). */
+/** Cooking step (one oven). */
 public class CookingEvent extends Event {
 
     private final Order order;
@@ -25,7 +25,7 @@ public class CookingEvent extends Event {
     @Override
     public void process(Model m, ISchedule s) {
         int done = m.cook(getTime(), order);
+        order.stepCompleted();                // step 4: cooking
         s.schedule(new BoxingEvent(done, order));
-        order.stepCompleted();
     }
 }
