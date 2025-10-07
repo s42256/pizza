@@ -12,7 +12,7 @@ import cqu.pizza.simulator.ISchedule;
  *
  * @author sisak
  */
-/** Start preparation right after actioned. */
+/** Preparation step. */
 public class PreparationEvent extends Event {
 
     private final Order order;
@@ -25,7 +25,7 @@ public class PreparationEvent extends Event {
     @Override
     public void process(Model m, ISchedule s) {
         int done = m.prepare(getTime(), order);
-        s.schedule(new CookingEvent(done, order));
-        order.stepCompleted();
+        order.stepCompleted();                // step 2: preparation
+        s.schedule(new QueuingEvent(done, order));
     }
 }

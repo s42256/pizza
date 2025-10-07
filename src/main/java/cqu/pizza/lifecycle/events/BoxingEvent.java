@@ -12,7 +12,8 @@ import cqu.pizza.simulator.ISchedule;
  *
  * @author sisak
  */
-/** Box the pizza after cooking. */
+
+/** Boxing step. Also rotates the oven queue to the next order. */
 public class BoxingEvent extends Event {
 
     private final Order order;
@@ -24,8 +25,18 @@ public class BoxingEvent extends Event {
 
     @Override
     public void process(Model m, ISchedule s) {
+        // The cooked order leaves the oven.
+        m.remove(getTime());
+
+        // Start boxing this cooked order.
         int done = m.box(getTime(), order);
+        order.stepCompleted();                // step 5: boxing
         s.schedule(new FinalisationEvent(done, order));
-        order.stepCompleted();
+
+        // If someone is waiting, start their cooking now at current time.
+        Order next = m.peek();
+        if (next != null) {
+            s.schedule(new CookingEvent(getTime(), next));
+        }
     }
 }
