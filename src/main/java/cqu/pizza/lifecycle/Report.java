@@ -3,6 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package cqu.pizza.lifecycle;
+
+import java.io.FileNotFoundException;
+import java.util.Formatter;
+import java.util.FormatterClosedException;
 import java.util.List;
 
 /**
@@ -82,5 +86,24 @@ public class Report {
      */
     public String getText() {
         return text;
+    }
+
+    /**
+     * Saves the report text to the specified filename using a Formatter.
+     * Uses try-with-resources and wraps any I/O errors in a ReportException.
+     *
+     * @param filename target file name or path
+     * @throws ReportException if the file cannot be opened or written
+     */
+    public void save(String filename) throws ReportException {
+        try (Formatter out = new Formatter(filename)) {
+            out.format("%s", text);
+        } catch (SecurityException e) {
+            throw new ReportException("Error accessing " + filename);
+        } catch (FileNotFoundException e) {
+            throw new ReportException("Error opening " + filename);
+        } catch (FormatterClosedException e) {
+            throw new ReportException("Error writing to " + filename);
+        }
     }
 }
