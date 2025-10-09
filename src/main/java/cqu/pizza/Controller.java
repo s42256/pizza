@@ -2,6 +2,7 @@ package cqu.pizza;
 
 import cqu.pizza.lifecycle.Model;
 import cqu.pizza.lifecycle.Report;
+import cqu.pizza.lifecycle.ReportException;
 import cqu.pizza.lifecycle.events.OrderEvent;
 import cqu.pizza.lifecycle.events.ReportEvent;
 import cqu.pizza.simulator.Simulator;
@@ -12,15 +13,16 @@ import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import java.net.URL;
 import java.util.ResourceBundle;
-import cqu.pizza.lifecycle.ReportException;
-
 
 /**
- * Controller for the Pizza Simulation GUI. Handles button clicks and
- * updates the text fields and report area.
- *
+ * JavaFX controller for the Pizza Simulation GUI.
+ * Validates input, runs the simulation, shows the report, and saves it to a file.
+ */
+
+/**
  * @author sisak
  */
 public class Controller implements Initializable {
@@ -32,14 +34,20 @@ public class Controller implements Initializable {
     private Model model;
     private Report report;
 
-    /** Called after the FXML is loaded. */
+    /**
+     * Called by JavaFX after the FXML has been loaded.
+     *
+     * @param location location used to resolve relative paths (unused)
+     * @param resources resources used for localization (unused)
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // no extra setup required for Phase 1–2
+        // no extra setup required
     }
 
     /**
-     * Starts the simulation when the Run button is clicked.
+     * Handles the Run button: validates the duration, creates a model/simulator,
+     * runs the simulation, and displays the generated report text.
      *
      * @param event action event from the Run button
      */
@@ -62,7 +70,6 @@ public class Controller implements Initializable {
             sim.initialize(first, reportEvent);
             sim.run(duration);
 
-            // Phase 4+: get the generated report and display it
             report = model.getReport();
             if (report != null) {
                 reportArea.setText(report.getText());
@@ -78,8 +85,8 @@ public class Controller implements Initializable {
     }
 
     /**
-     * Saves the report to the file specified in the filename field.
-     * Validates that a report exists and that a filename has been entered.
+     * Handles the Save button: validates a file name and that a report exists,
+     * then writes the report to disk and shows a status message.
      *
      * @param event action event from the Save button
      */
@@ -107,7 +114,8 @@ public class Controller implements Initializable {
     }
 
     /**
-     * Clears input fields and report area.
+     * Handles the Reset button: clears input fields and the report area,
+     * and shows a confirmation message.
      *
      * @param event action event from the Reset button
      */
@@ -120,7 +128,7 @@ public class Controller implements Initializable {
     }
 
     /**
-     * Closes the application window.
+     * Handles the Exit button: closes the application window.
      *
      * @param event action event from the Exit button
      */

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cqu.pizza.lifecycle.data;
 
 /**
@@ -9,7 +5,8 @@ package cqu.pizza.lifecycle.data;
  * @author sisak
  */
 /**
- * Generates requests at a fixed interval, cycling over menu items.
+ * Generates {@link Request}s at a fixed interval, cycling over menu items.
+ * Every fourth request is for {@code "LOT"} to exercise the refusal path.
  */
 public class UnlimitedUniform implements IRequestDistribution {
 
@@ -31,10 +28,10 @@ public class UnlimitedUniform implements IRequestDistribution {
     }
 
     /**
-     * Returns the next request. Every fourth request is for "LOT"
-     * to exercise the refusal path in Phase 2.
+     * Returns the next request. The sequence alternates between menu items,
+     * and every 4th request (index 3) is for a non-menu pizza {@code "LOT"}.
      *
-     * @return next request
+     * @return next {@link Request}
      */
     @Override
     public Request next() {

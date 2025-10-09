@@ -1,15 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cqu.pizza.simulator;
 
 /**
+ * Scheduling capability provided to events; implemented by the simulator.
  *
  * @author sisak
- */
-/**
- * Scheduling capability provided to events.
  */
 public interface ISchedule {
 

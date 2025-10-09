@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cqu.pizza.lifecycle;
 
 import java.io.FileNotFoundException;
@@ -89,8 +85,8 @@ public class Report {
     }
 
     /**
-     * Saves the report text to the specified filename using a Formatter.
-     * Uses try-with-resources and wraps any I/O errors in a ReportException.
+     * Saves the report text to the specified filename using a {@link Formatter}.
+     * Uses try-with-resources and wraps any I/O errors in a {@link ReportException}.
      *
      * @param filename target file name or path
      * @throws ReportException if the file cannot be opened or written

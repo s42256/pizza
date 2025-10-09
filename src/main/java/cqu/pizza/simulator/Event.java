@@ -1,23 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cqu.pizza.simulator;
 
-/**
- *
- * @author sisak
- */
 import cqu.pizza.lifecycle.Model;
 
 /**
- * Base class for all events in the simulation.
+ * Base class for all simulation events.
+ * Stores the scheduled time and defines the processing contract.
+ *
+ * @author sisak
  */
 public abstract class Event {
 
     private final int time;
 
-    /**
+     /**
      * Creates an event scheduled for a specific time.
      *
      * @param time event time
@@ -26,13 +21,17 @@ public abstract class Event {
         this.time = time;
     }
 
-    /** @return event time */
+    /**
+     * Returns the event time.
+     *
+     * @return scheduled time for this event
+     */
     public int getTime() {
         return time;
     }
 
     /**
-     * Executes the event.
+     * Executes the event and optionally schedules successors through {@code s}.
      *
      * @param m model reference
      * @param s scheduler to allow new events to be added

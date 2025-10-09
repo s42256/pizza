@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cqu.pizza.lifecycle;
 
 import cqu.pizza.lifecycle.data.IRequestDistribution;
@@ -16,17 +12,14 @@ import java.util.Queue;
 
 import static cqu.pizza.lifecycle.data.Plan.BOXING_TIME;
 import static cqu.pizza.lifecycle.data.Plan.COOKING_TIME;
-/**
- *
- * @author sisak
- */
 
 /**
  * The application model. Tracks all orders and provides the
  * processing methods used by events (prepare, queue, cook, box, finalise),
- * plus report creation.
+ * and creates the statistics report.
+ *
+ * @author sisak
  */
-
 public class Model {
 
     /** Distribution used to generate request arrivals. */
@@ -35,7 +28,7 @@ public class Model {
     /** Menu information and fixed step times. */
     private final Plan plan;
 
-    /** Report built at the end of a run (Phase 4+). */
+    /** Report built at the end of a run. */
     private Report report;
 
     /** All orders seen during the run. */
@@ -55,21 +48,28 @@ public class Model {
 
     /**
      * Builds the model and initialises the request distribution.
-     * The interval here matches the unit’s test data (3).
+     * Uses an interval of 3 time units for arrivals.
      */
     public Model() {
         this.plan = new Plan();
         this.requests = new UnlimitedUniform(3);
     }
 
-    /** Returns the next generated request. */
+    /**
+     * Returns the next generated request.
+     *
+     * @return next {@link Request}
+     */
     public Request nextRequest() {
         return requests.next();
     }
 
     /**
      * Creates a new order from a request and logs whether it is actioned or refused.
-     * If refused, the order finishes at the request time and null is returned.
+     * If refused, the order finishes at the request time and {@code null} is returned.
+     *
+     * @param r incoming request
+     * @return created {@link Order}, or {@code null} if refused
      */
     public Order order(Request r) {
         Order o = new Order(nextIdentifier++, r.orderTime(), r.pizza());
@@ -90,11 +90,22 @@ public class Model {
         return o;
     }
 
-    // ---------------- Phase 3 step methods (no queue timing logic here) ----------------
-
+    /**
+     * Returns the correct singular/plural word for minutes.
+     *
+     * @param n number of minutes
+     * @return "minute" if {@code n == 1}, otherwise "minutes"
+     */
     private static String minWord(int n) { return (n == 1) ? "minute" : "minutes"; }
 
-    /** Preparation trace + completion time. */
+    /**
+     * Performs the preparation step: prints a trace line and returns
+     * the time when preparation completes.
+     *
+     * @param time current clock time
+     * @param o    order being prepared
+     * @return completion time of preparation
+     */
     public int prepare(int time, Order o) {
         int prep = plan.getPreparationTime(o.getPizza());
         System.out.printf("t = %4d: Order %d preparation will take %d %s%n",
@@ -102,21 +113,41 @@ public class Model {
         return time + prep;
     }
 
-    /** Cooking trace + completion time. */
+    /**
+     * Performs the cooking step: prints a trace line and returns the
+     * time when cooking completes.
+     *
+     * @param time current clock time
+     * @param o    order being cooked
+     * @return completion time of cooking
+     */
     public int cook(int time, Order o) {
         System.out.printf("t = %4d: Order %d cooking will take %d %s%n",
                 time, o.getId(), COOKING_TIME, minWord(COOKING_TIME));
         return time + COOKING_TIME;
     }
 
-    /** Boxing trace + completion time. */
+    /**
+     * Performs the boxing step: prints a trace line and returns
+     * the time when boxing completes.
+     *
+     * @param time current clock time
+     * @param o    order being boxed
+     * @return completion time of boxing
+     */
     public int box(int time, Order o) {
         System.out.printf("t = %4d: Order %d boxing will take %d %s%n",
                 time, o.getId(), BOXING_TIME, minWord(BOXING_TIME));
         return time + BOXING_TIME;
     }
 
-    /** Finalise trace + moves order to completed and sets finish time. */
+    /**
+     * Finalises an order: sets its finish time, moves it to the
+     * completed list and prints the completion trace.
+     *
+     * @param time finish time
+     * @param o    order to finalise
+     */
     public void finalise(int time, Order o) {
         o.setFinish(time);
         activeOrders.remove(o);
@@ -124,12 +155,14 @@ public class Model {
         System.out.printf("t = %4d: Order %d completed%n", time, o.getId());
     }
 
-    // ---------------- Phase 6: one-oven queue methods ----------------
-
     /**
      * Adds an order to the oven queue and prints how many are ahead.
-     * If the queue was empty, returns the same time (start cooking now).
-     * If not empty, returns 0 (must wait).
+     * If the queue was empty, the order starts cooking immediately and
+     * this method returns {@code time}. Otherwise it returns {@code 0}.
+     *
+     * @param time current clock time
+     * @param o    order joining the queue
+     * @return {@code time} if cooking can start now; {@code 0} otherwise
      */
     public int queue(int time, Order o) {
         int ahead = queue.size();
@@ -137,24 +170,30 @@ public class Model {
                 time, o.getId(), ahead);
 
         if (ahead == 0) {
-            // starts cooking immediately
             queue.add(o);
             return time;
         } else {
-            // joins the end of the queue
             queue.add(o);
             return 0;
         }
     }
 
-    /** Peeks at the order at the head of the queue (in oven), or null if none. */
+    /**
+     * Returns the order at the head of the queue (currently in oven),
+     * or {@code null} if the queue is empty.
+     *
+     * @return head order, or {@code null} if none
+     */
     public Order peek() {
         return queue.peek();
     }
 
     /**
      * Removes the order at the head of the queue (it has finished cooking)
-     * and prints the “removed from oven” trace.
+     * and prints the "removed from oven" trace.
+     *
+     * @param time current clock time
+     * @return the removed order, or {@code null} if the queue was empty
      */
     public Order remove(int time) {
         Order o = queue.poll();
@@ -164,21 +203,63 @@ public class Model {
         return o;
     }
 
-    // ---------------- Reporting (Phase 4/5) ----------------
-
-    /** Builds the report and also prints the “Simulation stopped” line. */
+    /**
+     * Builds the summary report for the current model state and prints the
+     * "Simulation stopped" line at the given duration.
+     *
+     * @param duration total run duration (stop time)
+     */
     public void report(int duration) {
         System.out.printf("t = %4d: Simulation stopped%n", duration);
         this.report = new Report(duration, completedOrders, refusedOrders, activeOrders);
     }
 
+    /**
+     * Returns the most recently generated report, or {@code null} if none exists.
+     *
+     * @return current {@link Report} or {@code null}
+     */
     public Report getReport() { return report; }
 
-    // Accessors used elsewhere / for completeness
+    /**
+     * Returns all orders observed during the run.
+     *
+     * @return list of all orders
+     */
     public List<Order> getAllOrders()       { return allOrders; }
+
+    /**
+     * Returns the active (in-progress) orders.
+     *
+     * @return list of active orders
+     */
     public List<Order> getActiveOrders()    { return activeOrders; }
+
+    /**
+     * Returns the completed orders.
+     *
+     * @return list of completed orders
+     */
     public List<Order> getCompletedOrders() { return completedOrders; }
+
+    /**
+     * Returns the refused orders.
+     *
+     * @return list of refused orders
+     */
     public List<Order> getRefusedOrders()   { return refusedOrders; }
+
+    /**
+     * Returns the oven queue reference.
+     *
+     * @return oven queue
+     */
     public Queue<Order> getQueue()          { return queue; }
+
+    /**
+     * Returns the plan used for menu and timings.
+     *
+     * @return {@link Plan}
+     */
     public Plan getPlan()                   { return plan; }
 }
