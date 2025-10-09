@@ -8,9 +8,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * 
- * @author 12296309
- * @author MD SAKIB UL ISLAM
+ * JavaFX application entry point for the Pizza Simulation.
+ * Loads the FXML, creates the primary stage, and shows the UI.
+ */
+
+/**
+ * @author sisak
  */
 public class App extends Application {
 
@@ -45,8 +48,8 @@ public class App extends Application {
     /**
      * Loads an FXML file and returns its root node.
      *
-     * @param fxml base name of the FXML file (without extension)
-     * @return root node of the loaded FXML
+     * @param fxml base name of the FXML file
+     * @return the root {@link Parent} node of the loaded FXML
      * @throws IOException if the FXML cannot be loaded
      */
     private static Parent loadFXML(String fxml) throws IOException {
@@ -55,9 +58,9 @@ public class App extends Application {
     }
 
     /**
-     * Launches the application.
+     * Launches the JavaFX application.
      *
-     * @param args command-line arguments
+     * @param args command-line arguments (unused)
      */
     public static void main(String[] args) {
         launch();

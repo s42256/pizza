@@ -1,0 +1,22 @@
+Statistics
+==========
+Duration of run = 20
+Orders completed = 3
+Orders refused = 1
+Orders active = 3
+
+Completed orders
+================
+<1,0,11,P&P,5>
+<2,3,13,P&O,5>
+<3,6,17,P&P,5>
+
+Refused orders
+==============
+<4,9,9,LOT,0>
+
+Active orders
+=============
+<5,12,-1,P&P,3>
+<6,15,-1,P&O,3>
+<7,18,-1,P&P,2>

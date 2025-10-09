@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cqu.pizza.lifecycle.events;
 
 import cqu.pizza.lifecycle.Model;
@@ -16,12 +12,22 @@ import cqu.pizza.simulator.ISchedule;
 public class BoxingEvent extends Event {
 
     private final Order order;
-
+    /**
+     * Creates a boxing event for the given order.
+     *
+     * @param time  scheduled time
+     * @param order order to be boxed
+     */
     public BoxingEvent(int time, Order order) {
         super(time);
         this.order = order;
     }
-
+    /**
+     * Runs the boxing step and schedules {@link FinalisationEvent}.
+     *
+     * @param m model providing step behaviour
+     * @param s scheduler used to queue the next event
+     */
     @Override
     public void process(Model m, ISchedule s) {
         int done = m.box(getTime(), order);

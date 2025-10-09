@@ -1,13 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cqu.pizza.lifecycle.events;
 
 /**
+ * Placeholder for the queueing step used when oven capacity is limited.
+ * Not used in the current phase.
  *
  * @author sisak
  */
 public class QueuingEvent {
-    
+    // No implementation required in this phase.
 }

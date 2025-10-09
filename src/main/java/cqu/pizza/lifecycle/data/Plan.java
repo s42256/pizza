@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cqu.pizza.lifecycle.data;
 
 import java.util.HashMap;
@@ -50,7 +46,7 @@ public class Plan {
     /**
      * Indicates whether a pizza is on the menu.
      * @param pizzaName the name to check
-     * @return true if present, false otherwise
+     * @return {@code true} if present, {@code false} otherwise
      */
     public boolean onMenu(String pizzaName) {
         return menu.containsKey(pizzaName);
@@ -59,7 +55,7 @@ public class Plan {
     /**
      * Returns the preparation time for a given pizza.
      * @param pizzaName menu name
-     * @return minutes to prepare, or -1 if not on the menu
+     * @return minutes to prepare, or {@code -1} if not on the menu
      */
     public int getPreparationTime(String pizzaName) {
         Pizza p = menu.get(pizzaName);

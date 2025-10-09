@@ -1,18 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cqu.pizza.simulator;
 
 import cqu.pizza.lifecycle.Model;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
+ * Manages the ordered event queue and runs the simulation loop.
  *
  * @author sisak
- */
-/**
- * Manages the event queue and runs the simulation loop.
  */
 public class Simulator implements ISchedule {
 
@@ -32,8 +27,8 @@ public class Simulator implements ISchedule {
     /**
      * Seeds the event queue with the first arrival and the final report.
      *
-     * @param firstEvent first arrival event at time 0
-     * @param reportEvent report event at stop time
+     * @param firstEvent  first arrival event (e.g., at time 0)
+     * @param reportEvent report event at the stop time
      */
     public void initialize(Event firstEvent, Event reportEvent) {
         schedule(firstEvent);
@@ -42,23 +37,21 @@ public class Simulator implements ISchedule {
 
     /**
      * Runs the simulation until the stop time.
-     * (Method reproduced exactly as required.)
+     * (This method mirrors the provided algorithm.)
      *
      * @param stopTime last time to process
      */
     public void run(int stopTime) {
-        if ((events == null)|| events.isEmpty() )
+        if (events == null || events.isEmpty()) {
             return;
+        }
         Event e = events.remove(0);
         clock = e.getTime();
         // events queue will never become empty as after the first event is
         // added, every arrival event will generate a new arrival event
         // (which may be greater than the stop time)
         while (clock <= stopTime) {
-            e.process(model, this);// the this argument means that we are
-            // passing a reference to this simulator
-            // object to the event’s process method –
-            // so it will be able to schedule events
+            e.process(model, this); // allow event to schedule successors
             e = events.remove(0);
             clock = e.getTime();
         }

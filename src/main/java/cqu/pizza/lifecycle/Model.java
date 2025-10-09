@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cqu.pizza.lifecycle;
 
 import cqu.pizza.lifecycle.data.IRequestDistribution;
@@ -16,13 +12,14 @@ import java.util.Queue;
 
 import static cqu.pizza.lifecycle.data.Plan.BOXING_TIME;
 import static cqu.pizza.lifecycle.data.Plan.COOKING_TIME;
+
 /**
- *
- * @author sisak
+ * Core application model.
+ * Maintains orders and implements the processing steps used by events
+ * (prepare, cook, box, finalise). Also builds the end-of-run report.
  */
 /**
- * The application model. Tracks all orders and provides the
- * processing methods used by events (prepare, cook, box, finalise).
+ * @author sisak
  */
 public class Model {
 
@@ -32,7 +29,7 @@ public class Model {
     /** Menu information and fixed step times. */
     private final Plan plan;
 
-    /** The report generated at the end of a run (Phase 4). */
+    /** The report generated at the end of a run. */
     private Report report;
 
     /** All orders seen during the run. */
@@ -51,8 +48,8 @@ public class Model {
     private int nextIdentifier = 1;
 
     /**
-     * Builds the model and initialises the request distribution.
-     * The interval here matches the Phase 2/3 tests.
+     * Constructs a new {@code Model} with default plan and request distribution.
+     * Uses an {@link UnlimitedUniform} distribution with a 3-time-unit interval.
      */
     public Model() {
         this.plan = new Plan();
@@ -61,6 +58,7 @@ public class Model {
 
     /**
      * Returns the next generated request.
+     *
      * @return next {@link Request}
      */
     public Request nextRequest() {
@@ -94,12 +92,11 @@ public class Model {
         return o;
     }
 
-    // ---------------- Phase 3 step methods (no queue) ----------------
-
-    /**
-     * Helper for "minute/minutes" wording.
+       /**
+     * Helper to choose the singular/plural word for minutes.
+     *
      * @param n number of minutes
-     * @return "minute" if n==1, otherwise "minutes"
+     * @return {@code "minute"} when {@code n == 1}; otherwise {@code "minutes"}
      */
     private static String minWord(int n) {
         return (n == 1) ? "minute" : "minutes";
@@ -150,7 +147,7 @@ public class Model {
 
     /**
      * Finalises the order: sets its finish time, moves it to the
-     * completed list and prints the completion trace.
+     * completed list, and prints a completion trace.
      *
      * @param time finish time
      * @param o    order to finalise
@@ -162,13 +159,11 @@ public class Model {
         System.out.printf("t = %4d: Order %d completed%n", time, o.getId());
     }
 
-    // ---------------- Phase 4 report methods ----------------
-
     /**
      * Builds and stores the statistics/status report for the current model state.
-     * Called from {@code ReportEvent} at the simulation stop time.
+     * Called at the simulation stop time.
      *
-     * @param duration the total run duration (stop time)
+     * @param duration total run duration (stop time)
      */
     public void report(int duration) {
         this.report = new Report(duration, completedOrders, refusedOrders, activeOrders);
@@ -178,17 +173,51 @@ public class Model {
      * Returns the most recently generated report (may be {@code null}
      * if the simulation has not yet produced one).
      *
-     * @return the report for the last run, or {@code null}
+     * @return the {@link Report} for the last run, or {@code null}
      */
     public Report getReport() {
         return report;
     }
 
-    // Accessors used in later phases / report
-    public List<Order> getAllOrders()       { return allOrders; }
-    public List<Order> getActiveOrders()    { return activeOrders; }
+    /**
+     * Returns all orders observed during the run.
+     *
+     * @return list of all orders
+     */
+    public List<Order> getAllOrders() { return allOrders; }
+
+    /**
+     * Returns the currently active orders.
+     *
+     * @return list of active orders
+     */
+    public List<Order> getActiveOrders() { return activeOrders; }
+
+    /**
+     * Returns the completed orders.
+     *
+     * @return list of completed orders
+     */
     public List<Order> getCompletedOrders() { return completedOrders; }
-    public List<Order> getRefusedOrders()   { return refusedOrders; }
-    public Queue<Order> getQueue()          { return queue; }
-    public Plan getPlan()                   { return plan; }
+
+    /**
+     * Returns the refused orders.
+     *
+     * @return list of refused orders
+     */
+    public List<Order> getRefusedOrders() { return refusedOrders; }
+
+    /**
+     * Returns the oven queue used in the queueing phase.
+     *
+     * @return queue of orders awaiting the oven
+     */
+    public Queue<Order> getQueue() { return queue; }
+
+    /**
+     * Returns the plan describing menu items and step durations.
+     *
+     * @return the plan
+     */
+    public Plan getPlan() { return plan; }
 }
